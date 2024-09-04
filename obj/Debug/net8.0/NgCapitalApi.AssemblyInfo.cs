@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NgCapitalApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+758d7016f2ee64e369621d326b888b6aa6e0de7f")]
 [assembly: System.Reflection.AssemblyProductAttribute("NgCapitalApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NgCapitalApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
