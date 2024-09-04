@@ -238,8 +238,8 @@ namespace MiProyectoWebAPI.Controllers
 ```
 
 8) Migración y creación de la base de datos
- * **dotnet ef migrations add InitialCreate**
- * **dotnet ef database update**
+    * **dotnet ef migrations add InitialCreate**
+    * **dotnet ef database update**
 
 9) Probar el funcionamiento
- * **dotnet run**
+    * **dotnet run**
