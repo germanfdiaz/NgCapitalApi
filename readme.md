@@ -118,15 +118,12 @@ namespace PruebaEF.Data
     }
 ```
 6) Registrar el DbContext en Program.cs
-   * Agregar el using del dbcontext y el de entityFramework.
+   * Agregar el using del dbcontext y el de entityFramework y además las lineas de configuración.
 
 ``` [C#]
 using Microsoft.EntityFrameworkCore;
 using PruebaEF.Data;
-```
-   * Agregar las siguientes lineas de configuración.
 
-``` [C#]
 // Add services to the container.
 builder.Services.AddDbContext<PruebaEFDbContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
