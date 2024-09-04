@@ -119,11 +119,11 @@ namespace PruebaEF.Data
 ```
 6) Registrar el DbContext en Program.cs
    * Agregar el using del dbcontext y el de entityFramework.
+
 ``` [C#]
 using Microsoft.EntityFrameworkCore;
 using PruebaEF.Data;
 ```
-
    * Agregar las siguientes lineas de configuración.
 
 ``` [C#]
