@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using NgCapitalApi.Data;
 using NgCapitalApi.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace MiProyectoWebAPI.Controllers
+
+namespace NgCapitalApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -23,7 +23,8 @@ namespace MiProyectoWebAPI.Controllers
         {
             return await _context.Usuarios.ToListAsync();
         }
-
+        
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<Usuario>> GetUsuario(int id)
         {
@@ -46,6 +47,7 @@ namespace MiProyectoWebAPI.Controllers
             return CreatedAtAction("GetUsuario", new { id = usuario.Id }, usuario);
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUsuario(int id, Usuario usuario)
         {
@@ -75,6 +77,7 @@ namespace MiProyectoWebAPI.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUsuario(int id)
         {
