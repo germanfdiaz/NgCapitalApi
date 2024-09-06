@@ -398,11 +398,10 @@ builder.Services.AddSwaggerGen(c =>
 });
 ```   
 
-Nota: Si se tienen problemas el momento de autenticar con token.
-a) Agregar
-    * **dotnet add package Microsoft.IdentityModel.JsonWebTokens --version 8.0.2
-**
-    * dotnet restore PruebaEF.csproj
+#### Nota: Si se tienen problemas el momento de autenticar con token.
+1) Agregar
+    * **dotnet add package Microsoft.IdentityModel.JsonWebTokens --version 8.0.2**
+    * **dotnet restore PruebaEF.csproj**
 
 b) Verificar si siguen los problemas por consola mediante la siguiente configuración en el archivo ```appsettings.json```
 ```
