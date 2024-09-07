@@ -111,3 +111,4 @@ C:\Users\Administrator\Desktop\Proyectos\NetCore\NgCapitalApi\bin\Debug\net8.0\M
 C:\Users\Administrator\Desktop\Proyectos\NetCore\NgCapitalApi\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\Administrator\Desktop\Proyectos\NetCore\NgCapitalApi\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\Administrator\Desktop\Proyectos\NetCore\NgCapitalApi\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\Administrator\Desktop\Proyectos\NetCore\NgCapitalApi\bin\Debug\net8.0\BCrypt.Net-Next.dll

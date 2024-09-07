@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using NgCapitalApi.Data;
 using NgCapitalApi.Models;
+using BCrypt.Net;
 
 
 namespace NgCapitalApi.Controllers
@@ -41,6 +42,7 @@ namespace NgCapitalApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
         {
+            usuario.Password = BCrypt.Net.BCrypt.HashPassword(usuario.Password);
             _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();
 
@@ -56,6 +58,7 @@ namespace NgCapitalApi.Controllers
                 return BadRequest();
             }
 
+            usuario.Password = BCrypt.Net.BCrypt.HashPassword(usuario.Password);
             _context.Entry(usuario).State = EntityState.Modified;
 
             try
