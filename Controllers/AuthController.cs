@@ -1,12 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using NgCapitalApi.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using NgCapitalApi.Dtos;
 using Microsoft.AspNetCore.Authorization;
+
+using NgCapitalApi.Data;
 using NgCapitalApi.Models;
+using NgCapitalApi.Dtos;
 
 [Route("api/[controller]")]
 [AllowAnonymous]
@@ -15,21 +16,27 @@ public class AuthController : ControllerBase
 {
     private readonly NgCapitalApiDbContext _context;
     private readonly IConfiguration _configuration;
+    private readonly ILogger<AuthController> _logger;
 
-    public AuthController( NgCapitalApiDbContext context
-                          ,IConfiguration        configuration
+    public AuthController( NgCapitalApiDbContext   context
+                          ,IConfiguration          configuration
+                          ,ILogger<AuthController> logger
                         )
     {
         _context       = context;
         _configuration = configuration;
+        _logger = logger;
     }
 
     [HttpPost("signUp")]
     public IActionResult SignUp([FromBody] UserSignUpDto userSignUp)
     {
+        _logger.LogInformation("Registro de nuevo usuario. Email " + userSignUp.Email + ", contraseña: " + userSignUp.Password);
+
         // Verificar si el usuario ya existe
         if (_context.Usuarios.Any(u => u.Email == userSignUp.Email))
         {
+            _logger.LogError("El usuario ya existe.");
             return BadRequest("El usuario ya existe.");
         }
 
@@ -46,15 +53,21 @@ public class AuthController : ControllerBase
         _context.Usuarios.Add(usuario);
         _context.SaveChanges();
 
+        _logger.LogInformation("Usuario " + userSignUp.Nombre + "registrado existosamente.");
         return Ok("Usuario registrado exitosamente.");
     }
 
     [HttpPost("SignIn")]
     public IActionResult SignIn([FromBody] UserSignInDto userSignIn)
     {
+        _logger.LogInformation("Inicio de sesión: " + userSignIn.Email + " - " + userSignIn.Password);
+
         var user = _context.Usuarios.SingleOrDefault(u => u.Email == userSignIn.Email);
         if (user == null)
+        {
+            _logger.LogError("El usuario " + userSignIn.Email + " no existe.");
             return Unauthorized();
+        }
 
         bool isPasswordValid = BCrypt.Net.BCrypt.Verify(userSignIn.Password, user.Password);
         if (isPasswordValid)
@@ -62,8 +75,6 @@ public class AuthController : ControllerBase
             // La contraseña es correcta
             var jwt = _configuration.GetSection("Jwt").Get<JwtDto>();
             var tokenHandler = new JwtSecurityTokenHandler();
-            //var key = Encoding.ASCII.GetBytes("GermanFernandoDiaz20304246309110");//Encoding.ASCII.GetBytes("GermanFernandoDiaz20304246309110883");//_configuration["Jwt:Key"]==""?"GermanFernandoDiaz20304246309110883":"GermanFernandoDiaz20304246309110883");
-            //var key = Encoding.UTF8.GetBytes("GermanFernandoDiaz20304246309110");
             var key = Encoding.UTF8.GetBytes(jwt!.Key);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -83,17 +94,20 @@ public class AuthController : ControllerBase
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
 
+            _logger.LogInformation("Inicio de sesión exitoso de " + user.Nombre);
             return Ok(new { Token = tokenString });
         }
         else
         {
+            _logger.LogError("La contraseña ingresada es incorrecta");
             // return new
             // {
             //     success = false,
             //     message = "",
             //     result =  ""
             // };
-            return Unauthorized();
+            
+            return Unauthorized("La contraseña ingresada es incorrecta");
         }
     }
 }

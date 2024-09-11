@@ -19,6 +19,6 @@ namespace NgCapitalApi.Models
 
         [Required]
         [StringLength(100)]
-        public required string Password { get; set; }
+        public string ? Password { get; set; }
     }
 }

@@ -58,7 +58,17 @@ namespace NgCapitalApi.Controllers
                 return BadRequest();
             }
 
-            usuario.Password = BCrypt.Net.BCrypt.HashPassword(usuario.Password);
+            var user = await _context.Usuarios.FindAsync(id);
+
+            if (usuario.Password != "")
+            {
+                //bool isPasswordValid = BCrypt.Net.BCrypt.Verify(usuario.Password, user.Password);
+                //if (!isPasswordValid)
+                //{
+                    usuario.Password = BCrypt.Net.BCrypt.HashPassword(usuario.Password);
+                //}
+            }
+            
             _context.Entry(usuario).State = EntityState.Modified;
 
             try

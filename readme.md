@@ -414,3 +414,44 @@ b) Verificar si siguen los problemas por consola mediante la siguiente configura
     }
   },
 ```
+
+
+## Agregamos herramienta de Log
+
+1) Instalamos la siguiente libreria
+
+    * **dotnet add package NLog**
+    * **dotnet add package NLog.Web.AspNetCore**
+  
+2) Configuramos el archivo ```nlog.config``` 
+   
+   
+3) Configuramos el archivo ```Progran.cs```
+Primero agregamos las dependencias
+```
+using NLog;
+using NLog.Web;
+```
+Luego agregamos las siguientes lineas luego de las dependencias
+```
+var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+
+logger.Debug("Inicio NgCapitalApi");
+```
+Agregamos un bloque Try Catch Finally y dentro del try incluimos todo el resto del contenido del archivo ```Program.cs``` y luego llenamos Catch y Finally de la siguiente manera
+```
+catch (System.Exception e)
+{
+    logger.Error(e, "El sistema a finalizado debido a una excepción");
+    throw;
+}
+finally
+{
+    NLog.LogManager.Shutdown();
+}
+```
+Por último agreamos al builder las siguientes lineas
+```
+builder.Logging.ClearProviders();
+builder.Host.UseNLog();
+```

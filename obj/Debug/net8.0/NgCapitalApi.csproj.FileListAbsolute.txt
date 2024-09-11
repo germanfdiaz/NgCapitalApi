@@ -112,3 +112,7 @@ C:\Users\Administrator\Desktop\Proyectos\NetCore\NgCapitalApi\bin\Debug\net8.0\M
 C:\Users\Administrator\Desktop\Proyectos\NetCore\NgCapitalApi\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\Administrator\Desktop\Proyectos\NetCore\NgCapitalApi\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
 C:\Users\Administrator\Desktop\Proyectos\NetCore\NgCapitalApi\bin\Debug\net8.0\BCrypt.Net-Next.dll
+C:\Users\Administrator\Desktop\Proyectos\NetCore\NgCapitalApi\bin\Debug\net8.0\nlog.config
+C:\Users\Administrator\Desktop\Proyectos\NetCore\NgCapitalApi\bin\Debug\net8.0\NLog.dll
+C:\Users\Administrator\Desktop\Proyectos\NetCore\NgCapitalApi\bin\Debug\net8.0\NLog.Extensions.Logging.dll
+C:\Users\Administrator\Desktop\Proyectos\NetCore\NgCapitalApi\bin\Debug\net8.0\NLog.Web.AspNetCore.dll
