@@ -8,6 +8,7 @@ using BCrypt.Net;
 
 namespace NgCapitalApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsuariosController : ControllerBase
@@ -22,10 +23,11 @@ namespace NgCapitalApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuarios()
         {
-            return await _context.Usuarios.ToListAsync();
+            var usuarios = await _context.Usuarios.ToListAsync();
+            return Ok( new { status = true, message = "", data = usuarios } );
         }
         
-        [Authorize]
+        
         [HttpGet("{id}")]
         public async Task<ActionResult<Usuario>> GetUsuario(int id)
         {
@@ -33,10 +35,12 @@ namespace NgCapitalApi.Controllers
 
             if (usuario == null)
             {
-                return NotFound();
+                return BadRequest( new { status = false, message = "Usuario incorrecto.", data = "" } );
+                //return NotFound();
             }
 
-            return usuario;
+            return Ok( new { status = true, message = "", data = usuario } );
+            //return usuario;
         }
 
         [HttpPost]
@@ -46,64 +50,70 @@ namespace NgCapitalApi.Controllers
             _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();
 
+            //return Ok( new { status = true, message = "Se creó el dato sobre la tabla usuario  correctamente.", data = usuario } );
             return CreatedAtAction("GetUsuario", new { id = usuario.Id }, usuario);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUsuario(int id, Usuario usuario)
         {
             if (id != usuario.Id)
             {
-                return BadRequest();
+                return BadRequest( new { status = false, message = "Usuario incorrecto.", data = "" } );
             }
 
             var user = await _context.Usuarios.FindAsync(id);
 
-            if (usuario.Password != "")
+            if (user != null) 
             {
-                //bool isPasswordValid = BCrypt.Net.BCrypt.Verify(usuario.Password, user.Password);
-                //if (!isPasswordValid)
-                //{
-                    usuario.Password = BCrypt.Net.BCrypt.HashPassword(usuario.Password);
-                //}
-            }
-            
-            _context.Entry(usuario).State = EntityState.Modified;
+                //user.Id = usuario.Id;
+                user.Nombre = usuario.Nombre == "" ? user.Nombre : usuario.Nombre;
+                user.Email = usuario.Email == "" ? user.Email : usuario.Email;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UsuarioExists(id))
+                _context.Entry(user).State = EntityState.Modified;
+                try
                 {
-                    return NotFound();
+                    await _context.SaveChangesAsync();
                 }
-                else
+                catch (DbUpdateConcurrencyException e)
                 {
-                    throw;
+                    if (!UsuarioExists(id))
+                    {
+                        //return NotFound();
+                        return BadRequest( new { status = false, message = "Usuario inexistente.", data = "" } );
+                    }
+                    else
+                    {
+                        return BadRequest( new { status = false, message = "Error: " + e.Message, data = "" } );
+                        //throw;
+                    }
                 }
+                return Ok( new { status = true, message = "Se actualizaron los datos de la tabla usuario correctamente.", data = user } );
+                //return NoContent();
             }
-
-            return NoContent();
+            else
+            {
+                return BadRequest( new { status = false, message = "", data = "" } );
+            }            
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUsuario(int id)
         {
             var usuario = await _context.Usuarios.FindAsync(id);
             if (usuario == null)
             {
-                return NotFound();
+                return BadRequest( new { status = false, message = "Usuario inexistente", data = "" } );
+                //return NotFound();
             }
 
             _context.Usuarios.Remove(usuario);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok( new { status = true, message = "Se eliminaron los datos de la tabla usuario correctamente.", data = usuario } );
+            //return NoContent();
         }
 
         private bool UsuarioExists(int id)

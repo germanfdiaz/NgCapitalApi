@@ -17,7 +17,6 @@ namespace NgCapitalApi.Models
         [StringLength(45)]
         public required string Email { get; set; }
 
-        [Required]
         [StringLength(100)]
         public string ? Password { get; set; }
     }
